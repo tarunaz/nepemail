@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: BuildConfig
+metadata:
+  creationTimestamp: null
+  labels:
+    app: nepemail
+    template: uspto-generic-pipeline
+  name: nepemail-pipeline
+spec:
+  nodeSelector: null
+  output: {}
+  postCommit: {}
+  resources: {}
+  runPolicy: Serial
+  source:
+    git:
+      ref: master
+      uri: ssh://git@gitlab.consulting.redhat.com:2222/ncr/nepemail.git
+    type: Git
+    sourceSecret:
+      name: source-secret
+  strategy:
+    jenkinsPipelineStrategy:
+      jenkinsfilePath: Jenkinsfile
+    type: JenkinsPipeline
+  triggers: []
+status:
+  lastVersion: 0
