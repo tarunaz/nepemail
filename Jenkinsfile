@@ -3,7 +3,7 @@ podTemplate(label: 'maven-ose', cloud: 'openshift', containers: [
 ],
 volumes: [configMapVolume(configMapName: 'jenkins-maven-settings', mountPath: '/home/jenkins/.m2'),
           secretVolume(secretName: 'jenkins-nepemail-token-bfxfb', mountPath: '/etc/jenkins'),
-          persistentVolumeClaim(claimName: 'maven-local-repo', mountPath: '/home/jenkins/.m2/repository')]) {
+          persistentVolumeClaim(claimName: 'maven-local-repo', mountPath: '/etc/.m2repo')]) {
 
     node('maven-ose') {
         container(name: 'maven', cloud: 'openshift') {
@@ -16,7 +16,7 @@ volumes: [configMapVolume(configMapName: 'jenkins-maven-settings', mountPath: '/
             
             stage('Maven Build') {
                 sh """
-                mvn clean install -DskipTests
+                mvn -s /home/jenkins/.m2/settings.xml clean install -DskipTests
                 """
             }
 
