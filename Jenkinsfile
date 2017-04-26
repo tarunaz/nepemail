@@ -1,9 +1,9 @@
 podTemplate(label: 'maven-ose', cloud: 'openshift', containers: [
-  containerTemplate(name: 'maven', image: "registry.access.redhat.com/openshift3/jenkins-slave-maven-rhel7", ttyEnabled: true, command: 'cat', workingDir: '/tmp'),
+  containerTemplate(name: 'maven', image: "registry.access.redhat.com/openshift3/jenkins-slave-maven-rhel7", ttyEnabled: true, command: 'cat', workingDir: '/home/jenkins'),
 ],
-volumes: [configMapVolume(configMapName: 'jenkins-maven-settings', mountPath: '/tmp/.m2'),
+volumes: [configMapVolume(configMapName: 'jenkins-maven-settings', mountPath: '/home/jenkins/.m2'),
           secretVolume(secretName: 'jenkins-nepemail-token-bfxfb', mountPath: '/etc/jenkins'),
-          persistentVolumeClaim(claimName: 'maven-local-repo', mountPath: '/etc/.m2repo')]) {
+          persistentVolumeClaim(claimName: 'maven-local-repo', mountPath: '/home/jenkins/.m2/repository')]) {
 
     node('maven-ose') {
         container(name: 'maven', cloud: 'openshift') {
@@ -16,7 +16,7 @@ volumes: [configMapVolume(configMapName: 'jenkins-maven-settings', mountPath: '/
             
             stage('Maven Build') {
                 sh """
-                mvn clean package -DskipTests
+                mvn clean install -DskipTests
                 """
             }
 
