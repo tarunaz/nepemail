@@ -1,7 +1,7 @@
 podTemplate(label: 'maven-ose', cloud: 'openshift', containers: [
   containerTemplate(name: 'maven', image: "registry.access.redhat.com/openshift3/jenkins-slave-maven-rhel7"),
 ],
-volumes: [secretVolume(secretName: 'jenkins-nepemail-token-cfxhn', mountPath: '/root/jenkins-nepemail'),
+volumes: [secretVolume(secretName: 'jenkins-nepemail-token-va3uy', mountPath: '/root/jenkins-nepemail'),
           persistentVolumeClaim(claimName: 'jenkins', mountPath: '/home/jenkins/.m2')]) {
 
     node('maven-ose') {
