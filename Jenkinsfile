@@ -1,7 +1,7 @@
 podTemplate(label: 'maven-ose', cloud: 'openshift', containers: [
   containerTemplate(name: 'maven', image: "registry.access.redhat.com/openshift3/jenkins-slave-maven-rhel7"),
 ],
-volumes: [secretVolume(secretName: 'jenkins-nepemail-token-va3uy', mountPath: '/root/jenkins-nepemail'),
+volumes: [secretVolume(secretName: 'jenkins-nepemail-token-va3uy', mountPath: '/root/jenkins'),
           persistentVolumeClaim(claimName: 'jenkins', mountPath: '/home/jenkins/.m2')]) {
 
     node('maven-ose') {
@@ -22,7 +22,7 @@ volumes: [secretVolume(secretName: 'jenkins-nepemail-token-va3uy', mountPath: '/
             stage ('Binary Build') {
                 sh """
                 set +x
-                oc login --certificate-authority=/var/run/secrets/kubernetes.io/serviceaccount/ca.crt --token=\$(cat /root/jenkins-nepemail/token) https://openshift.rhc-lab.iad.redhat.com:8443
+                oc login --certificate-authority=/var/run/secrets/kubernetes.io/serviceaccount/ca.crt --token=\$(cat /root/jenkins/token) https://openshift.rhc-lab.iad.redhat.com:8443
                 oc project nepemail-int
                 oc start-build nepemail --from-file='./target/gs-spring-boot-docker-0.1.0.jar' -n nepemail-int --wait --follow
                 """
