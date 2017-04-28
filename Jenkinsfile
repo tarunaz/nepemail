@@ -17,7 +17,7 @@ node ('maven') {
     stage 'Maven Build'
 
         // build the project
-	   mvnHome = tool 'M3'
+	   mvnHome = tool 'maven'
            sh "${mvnHome}/bin/mvn -gs /etc/maven/settings.xml clean install -DskipTests"
     
     stage "Binary Build"
