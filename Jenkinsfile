@@ -19,8 +19,8 @@ node ('maven') {
         // build the project
 	// mvnHome = tool 'maven'
            sh """
-           set -x 
-	     mvn -gs /etc/maven/settings.xml clean install -DskipTests"
+             set -x 
+	     mvn -gs /etc/maven/settings.xml clean install -DskipTests
 	   """
     
     stage "Binary Build"
