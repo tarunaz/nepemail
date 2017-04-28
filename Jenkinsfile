@@ -15,9 +15,9 @@ volumes: [configMapVolume(configMapName: 'jenkins-maven-settings', mountPath: '/
             }
             
             stage('Maven Build') {
-                //sh """
-                //mvn -s /etc/maven/settings.xml clean install -DskipTests
-                //"""
+                sh """
+                mvn -s /etc/maven/settings.xml clean install -DskipTests
+                """
             }
 
             stage ('Binary Build') {
