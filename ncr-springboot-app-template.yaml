@@ -22,6 +22,8 @@ objects:
   apiVersion: v1
   metadata:
     name: "${APPLICATION_NAME}"
+    labels:
+      app: "${APPLICATION_NAME}"
   spec:
     triggers: []
     source:
@@ -42,14 +44,20 @@ objects:
   apiVersion: v1
   metadata:
     name: "${APPLICATION_NAME}"
+    labels:
+      app: "${APPLICATION_NAME}"
+    annotations:
+      openshift.io/image.insecureRepository: "true"
   spec:
-    dockerImageRepository: ''
+    dockerImageRepository: nexus.os1.phx2.redhat.com:8081/${APPLICATION_NAME}
     tags:
     - name: latest
 - kind: DeploymentConfig
   apiVersion: v1
   metadata:
     name: "${APPLICATION_NAME}"
+    labels:
+      app: "${APPLICATION_NAME}"
   spec:
     strategy:
       type: Rolling
@@ -58,9 +66,6 @@ objects:
         intervalSeconds: 1
         timeoutSeconds: 600
       resources: {}
-<<<<<<< HEAD
-    triggers: []
-=======
     triggers:
     - type: ConfigChange
     - type: ImageChange
@@ -71,7 +76,6 @@ objects:
         from:
           kind: ImageStreamTag
           name: "${APPLICATION_NAME}:latest"
->>>>>>> a7260a0b3b3656c51610c423964ec63a560339ce
     replicas: 1
     selector:
       deploymentconfig: "${APPLICATION_NAME}"
@@ -103,6 +107,8 @@ objects:
   apiVersion: v1
   metadata:
     name: "${APPLICATION_NAME}"
+    labels:
+      app: "${APPLICATION_NAME}"
   spec:
    host: "${APPLICATION_HOSTNAME}"
    to:
@@ -112,6 +118,8 @@ objects:
   apiVersion: v1
   metadata:
     name: "${APPLICATION_NAME}"
+    labels:
+      app: "${APPLICATION_NAME}"
   spec:
    ports:
    - name: "${APPLICATION_NAME}-http"
