@@ -18,7 +18,8 @@ node ('maven') {
 
         // build the project
 	// mvnHome = tool 'maven'
-           sh "mvn -gs /etc/maven/settings.xml clean install -DskipTests"
+	sleep 200
+        sh "mvn -gs /etc/maven/settings.xml clean install -DskipTests"
     
     stage "Binary Build"
         // NOTE: in theory this shouldn't be needed but run into issue where -n flag on commands isn't
