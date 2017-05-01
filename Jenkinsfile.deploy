@@ -59,7 +59,7 @@ def deployApp(appName, namespace, tag) {
                     {\\"containers\\":
                       [{
                         \\"name\\":\\"${appName}\\",
-                        \\"image\\":\\"\${newImageReference}\\"
+                        \\"image\\":\\"\${imageReference}\\"
                       }]
                     }
                   }
