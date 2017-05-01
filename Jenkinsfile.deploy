@@ -51,9 +51,6 @@ def deployApp(appName, namespace, tag) {
 
           imageReference=\$(oc get is ${appName} -n ${namespace} -o jsonpath="{.status.tags[?(@.tag==\\"latest\\")].items[*].dockerImageReference}")
 
-          oc patch dc/${appName} -n ${namespace} -p "{\\"spec\\":{\\"template\\":{\\"spec\\":{\\"containers\\":[{\\"name\\":\\"${appName}\\",\\"image\\": \\"\${imageReference}\\" } ]}}, \\"triggers\\": [ { \\"type\\": \\"ImageChange\\", \\"imageChangeParams\\": { \\"containerNames\\": [ \\"${appName}\\" ], \\"from\\": { \\"kind\\": \\"ImageStreamTag\\", \\"name\\": \\"\${newDeploymentImageName}\\" } } } ] }}"
-
-          
           # update the DeploymnetConfig to deploy the latest version
             oc patch dc/${appName} -n ${namespace} -p "
               {\\"spec\\":
