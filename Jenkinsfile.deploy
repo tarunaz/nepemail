@@ -9,7 +9,7 @@ volumes: [secretVolume(secretName: 'jenkins-nepemail-token-bfxfb', mountPath: '/
 
 	def appName = "nepemail"
 	def uatProject = "nepemail-uat"
-	def version
+	def tag = "uat"
 
     	def WORKSPACE = pwd()
 
