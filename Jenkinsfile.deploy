@@ -21,9 +21,6 @@ podTemplate(label: 'maven-ose', cloud: 'openshift', containers: [
                 validateDeployment(appName, uatProject, tag)
 
         }
-
-
-    }
    
 }
 
