@@ -22,6 +22,8 @@ volumes: [secretVolume(secretName: 'jenkins-nepemail-token-bfxfb', mountPath: '/
                 validateDeployment(appName, uatProject, tag)
 
         }
+
+    }
    
 }
 
