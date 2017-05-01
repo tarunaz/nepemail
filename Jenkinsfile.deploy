@@ -3,8 +3,8 @@ podTemplate(label: 'docker-ose', cloud: 'openshift', containers: [
 ],
 volumes: [hostPathVolume(hostPath: '/var/run/docker.sock', mountPath: '/var/run/docker.sock')]) {
 
-    	node('maven-ose') {
-        	container(name: 'maven', cloud: 'openshift') {
+    	node('docker-ose') {
+        	container(name: 'docker', cloud: 'openshift') {
 
 	def appName = "nepemail"
 	def uatProject = "nepemail-uat"
