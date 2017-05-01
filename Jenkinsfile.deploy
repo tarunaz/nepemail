@@ -13,13 +13,11 @@ volumes: [secretVolume(secretName: 'jenkins-nepemail-token-bfxfb', mountPath: '/
 
     	def WORKSPACE = pwd()
 
-        stage "Dev Deployment"
+        stage "UAT Deployment"
 
                 login()
 
 		deployApp(appName, uatProject, tag)
-
-                validateDeployment(appName, uatProject)
 
         }
 
@@ -68,10 +66,8 @@ def deployApp(appName, namespace, tag) {
                 }
               }"
 
-	  oc rollout latest dc/${appName} -n ${namespace}
+	  oc deploy ${appName} -n ${namespace} --latest --follow
 
-          # Sleep for a few moments
-          sleep 5
        """
 
 
