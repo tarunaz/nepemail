@@ -9,7 +9,7 @@ volumes: [secretVolume(secretName: 'jenkins-nepemail-token-bfxfb', mountPath: '/
 
 	def appName = "nepemail"
 	def uatProject = "nepemail-uat"
-	def tag = "uat"
+	def tag = "05012017_uat"
 
     	def WORKSPACE = pwd()
 
@@ -19,7 +19,7 @@ volumes: [secretVolume(secretName: 'jenkins-nepemail-token-bfxfb', mountPath: '/
 
 		deployApp(appName, uatProject, tag)
 
-                validateDeployment(appName, uatProject, tag)
+                validateDeployment(appName, uatProject)
 
         }
 
