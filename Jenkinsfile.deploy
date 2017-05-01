@@ -1,10 +1,10 @@
-podTemplate(label: 'docker-ose', cloud: 'openshift', containers: [
-  containerTemplate(name: 'docker', image: "docker", ttyEnabled: true, command: 'cat'),
-],
-volumes: [hostPathVolume(hostPath: '/var/run/docker.sock', mountPath: '/var/run/docker.sock')]) {
+podTemplate(label: 'maven-ose', cloud: 'openshift', containers: [
+  containerTemplate(name: 'jnlp', image: 'registry.access.redhat.com/openshift3/jenkins-slave-maven-rhel7', args: '${computer.jnlpmac} ${computer.name}'),
+  containerTemplate(name: 'maven', image: "registry.access.redhat.com/openshift3/jenkins-slave-maven-rhel7", ttyEnabled: true, command: 'cat', workingDir: '/home/jenkins'),
+] {
 
-    	node('docker-ose') {
-        	container(name: 'docker', cloud: 'openshift') {
+    	node('maven-ose') {
+        	container(name: 'maven', cloud: 'openshift') {
 
 	def appName = "nepemail"
 	def uatProject = "nepemail-uat"
