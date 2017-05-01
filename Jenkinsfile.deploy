@@ -1,0 +1,98 @@
+podTemplate(label: 'docker-ose', cloud: 'openshift', containers: [
+  containerTemplate(name: 'docker', image: "docker", ttyEnabled: true, command: 'cat'),
+],
+volumes: [hostPathVolume(hostPath: '/var/run/docker.sock', mountPath: '/var/run/docker.sock')]) {
+
+    	node('maven-ose') {
+        	container(name: 'maven', cloud: 'openshift') {
+
+	def appName = "nepemail"
+	def uatProject = "nepemail-uat"
+	def version
+
+    	def WORKSPACE = pwd()
+
+        stage "Dev Deployment"
+
+                login()
+
+		deployApp(appName, uatProject, tag)
+
+                validateDeployment(appName, uatProject, tag)
+
+        }
+
+
+    }
+   
+}
+
+def login() {
+    sh """
+       set +x
+       oc login --certificate-authority=/var/run/secrets/kubernetes.io/serviceaccount/ca.crt --token=\$(cat /var/run/secrets/kubernetes.io/serviceaccount/token) https://kubernetes.default.svc.cluster.local >/dev/null 2>&1 || echo 'OpenShift login failed'
+       """
+}
+
+def parseVersion(String filename) {
+  def matcher = readFile(filename) =~ '<version>(.+)</version>'
+  matcher ? matcher[0][1] : null
+}
+
+
+def deployApp(appName, namespace, tag) {
+
+	sh """
+          set -x
+
+	  oc import-image my-redhat-openjdk-18/openjdk18-openshift --from=registry.access.redhat.com/redhat-openjdk-18/openjdk18-openshift --confirm          
+
+          imageReference=\$(oc get is ${appName} -n ${namespace} -o jsonpath="{.status.tags[?(@.tag==\\"${tag}\\")].items[*].dockerImageReference}")
+
+          oc patch dc/${appName} -n ${namespace} -p "{\\"spec\\":{\\"template\\":{\\"spec\\":{\\"containers\\":[{\\"name\\":\\"${appName}\\",\\"image\\": \\"\${imageReference}\\" } ]}}, \\"triggers\\": [ { \\"type\\": \\"ImageChange\\", \\"imageChangeParams\\": { \\"containerNames\\": [ \\"${appName}\\" ], \\"from\\": { \\"kind\\": \\"ImageStreamTag\\", \\"name\\": \\"\${newDeploymentImageName}\\" } } } ] }}"
+
+          oc rollout latest dc/${appName} -n ${namespace}
+
+          # Sleep for a few moments
+          sleep 5
+       """
+
+
+}
+
+def validateDeployment(String appName, String namespace) {
+
+    sh """
+      set -x
+
+      COUNTER=0
+      DELAY=5
+      MAX_COUNTER=30
+
+      echo "Running Acceptance Check of ${appName} in project ${namespace}"
+
+      set +e
+
+      while [ \$COUNTER -lt \$MAX_COUNTER ]
+      do
+
+        RESPONSE=\$(curl -s -o /dev/null -w '%{http_code}\\n' http://${appName}.${namespace}.cloudapps.rhc-lab.iad.redhat.com/rest/api/pods)
+
+        if [ \$RESPONSE -eq 200 ]; then
+            echo
+            echo "Application Verified"
+            break
+        fi
+
+        if [ \$COUNTER -eq \$MAX_COUNTER ]; then
+          echo "Max Validation Attempts Exceeded. Failed Verifying Application Deployment..."
+          exit 1
+        fi
+
+        sleep \$DELAY
+
+      done
+
+      set -e
+      """
+}
