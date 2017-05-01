@@ -26,7 +26,7 @@ volumes: [configMapVolume(configMapName: 'jenkins-maven-settings', mountPath: '/
                 set +x
                 oc login --certificate-authority=/var/run/secrets/kubernetes.io/serviceaccount/ca.crt --token=\$(cat /etc/jenkins/token) https://openshift.rhc-lab.iad.redhat.com:8443
                 oc project nepemail-int
-                oc start-build nepemail --from-file='./gs-spring-boot-docker-0.1.0.jar' -n nepemail-int --wait --follow
+                oc start-build nepemail --from-file='./target/gs-spring-boot-docker-0.1.0.jar' -n nepemail-int --wait --follow
                 """
             }
         }
