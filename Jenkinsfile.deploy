@@ -43,7 +43,7 @@ def parseVersion(String filename) {
 def deployApp(appName, namespace, tag) {
 
 	sh """
-          set -x
+          set +x
 	  
   	  oc project ${namespace}
 
