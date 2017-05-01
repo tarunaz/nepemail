@@ -47,7 +47,7 @@ def deployApp(appName, namespace, tag) {
 	  
   	  oc project ${namespace}
 
-	  oc import-image nepemail --from=docker-registry-default.cloudapps.rhc-lab.iad.redhat.com/nepemail-int/nepemail:uat --confirm 
+	  oc import-image nepemail --from=docker-registry-default.cloudapps.rhc-lab.iad.redhat.com/nepemail-int/nepemail:uat -n nepemail-uat --confirm 
 
           imageReference=\$(oc get is ${appName} -n ${namespace} -o jsonpath="{.status.tags[?(@.tag==\\"${tag}\\")].items[*].dockerImageReference}")
 
