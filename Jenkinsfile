@@ -1,4 +1,4 @@
-podTemplate(namespace: 'nepemail-int', label: 'maven-ose', cloud: 'openshift', containers: [
+podTemplate(label: 'maven-ose', cloud: 'openshift', namespace: 'nepemail-int', containers: [
   containerTemplate(name: 'jnlp', image: 'registry.access.redhat.com/openshift3/jenkins-slave-maven-rhel7', args: '${computer.jnlpmac} ${computer.name}'),
   containerTemplate(name: 'maven', image: "registry.access.redhat.com/openshift3/jenkins-slave-maven-rhel7", ttyEnabled: true, command: 'cat', workingDir: '/home/jenkins'),
 ],
