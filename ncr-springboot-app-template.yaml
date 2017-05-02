@@ -39,6 +39,8 @@ objects:
       to:
         kind: ImageStreamTag
         name: "${APPLICATION_NAME}:latest"
+      pushsecret:
+        name: external-registry
     resources: {}
 - kind: ImageStream
   apiVersion: v1
