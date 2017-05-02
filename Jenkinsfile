@@ -1,8 +1,6 @@
-podTemplate(label: 'maven-ose', cloud: 'mycloud', containers: [
+podTemplate(label: 'maven-ose', cloud: 'openshift', namespace: 'nepemail-int', containers: [
   containerTemplate(name: 'jnlp', image: 'registry.access.redhat.com/openshift3/jenkins-slave-maven-rhel7', args: '${computer.jnlpmac} ${computer.name}'),
-  containerTemplate(name: 'maven', image: "registry.access.redhat.com/openshift3/jenkins-slave-maven-rhel7", ttyEnabled: true, command: 'cat', workingDir: '/home/jenkins' , envVars: [
-            containerEnvVar(key: 'KUBERNETES_NAMESPACE', value: 'nepemail-int')
-        ]),
+  containerTemplate(name: 'maven', image: "registry.access.redhat.com/openshift3/jenkins-slave-maven-rhel7", ttyEnabled: true, command: 'cat', workingDir: '/home/jenkins')
 ],
 volumes: [configMapVolume(configMapName: 'jenkins-maven-settings', mountPath: '/etc/maven'),
           secretVolume(secretName: 'jenkins-nepemail-token-cw7y5', mountPath: '/etc/jenkins'),
