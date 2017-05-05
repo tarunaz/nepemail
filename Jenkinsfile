@@ -1,4 +1,4 @@
-podTemplate(label: 'maven-ose', cloud: 'openshift', namespace: 'nepemail-int', containers: [
+podTemplate(label: 'maven-ose', cloud: 'ncr', containers: [
   containerTemplate(name: 'jnlp', image: 'registry.access.redhat.com/openshift3/jenkins-slave-maven-rhel7', args: '${computer.jnlpmac} ${computer.name}'),
   containerTemplate(name: 'maven', image: "registry.access.redhat.com/openshift3/jenkins-slave-maven-rhel7", ttyEnabled: true, command: 'cat', workingDir: '/home/jenkins')
 ],
@@ -7,7 +7,7 @@ volumes: [configMapVolume(configMapName: 'jenkins-maven-settings', mountPath: '/
           persistentVolumeClaim(claimName: 'maven-local-repo', mountPath: '/etc/.m2repo')]) {
 
     node('maven-ose') {
-        container(name: 'maven', cloud: 'openshift') {
+        container(name: 'maven', cloud: 'ncr') {
             def WORKSPACE = pwd()
             //def mvnHome = tool 'maven'
             
