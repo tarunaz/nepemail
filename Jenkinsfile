@@ -2,7 +2,7 @@ podTemplate(label: 'maven-ose', cloud: 'ncr', containers: [
   containerTemplate(name: 'maven', image: "registry.access.redhat.com/openshift3/jenkins-slave-maven-rhel7", ttyEnabled: true, command: 'cat', workingDir: '/home/jenkins')
 ],
 volumes: [configMapVolume(configMapName: 'jenkins-maven-settings', mountPath: '/etc/maven'),
-          secretVolume(secretName: 'jenkins-nepemail-token-1y8tf', mountPath: '/etc/jenkins'),
+          secretVolume(secretName: 'jenkins-nepemail-token-cw7y5', mountPath: '/etc/jenkins'),
           persistentVolumeClaim(claimName: 'maven-local-repo', mountPath: '/etc/.m2repo')]) {
 
     node('maven-ose') {
