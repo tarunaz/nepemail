@@ -1,0 +1,11 @@
+kind: ImageStream
+apiVersion: v1
+metadata:
+  name: "jenkins"
+  labels:
+    app: "jenkins"
+spec:
+  dockerImageRepository: ''
+  tags:
+  - name: latest
+
